@@ -35,7 +35,13 @@ while True:
     elif data.startswith(b"play"):
         mpvclient.send(b'{"command":["set_property","pause",false]}\n')
     elif data.startswith(b"seek"):
-        mpvclient.send(b'{"command":["set_property","time-pos",' + data.strip().split(b' ')[1] + b']}\n')
+        seek_time = data.strip().split(b' ')[1]
+
+        try:
+            float(seek_time)
+            mpvclient.send(b'{"command":["set_property","time-pos",' + seek_time + b']}\n')
+        except:
+            print("Invalid seek time")
 
 client.close()
 print("Connection to server closed")
